@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\PostStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,11 +15,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $offering_skill
  * @property string $looking_skill
  * @property string|null $description
- * @property string $status
+ * @property PostStatus $status
  */
 #[Fillable(['user_id', 'category_id', 'offering_skill', 'looking_skill', 'description', 'status'])]
 class Post extends Model
 {
+    public function casts(): array
+    {
+        return[
+            'status' => PostStatus::class,
+        ];
+    }
     /**
      * @return BelongsTo<User, $this>
      */

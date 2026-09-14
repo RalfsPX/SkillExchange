@@ -5,6 +5,8 @@ namespace App\Policies;
 use App\Models\PostOffer;
 use App\Models\User;
 use App\PostOfferStatus;
+use App\PostStatus;
+
 
 class PostOfferPolicy
 {
@@ -18,7 +20,7 @@ class PostOfferPolicy
     }
     public function accept(User $user, PostOffer $offer): bool
     {
-        return $user->id === $offer->post->user_id && $offer->status === PostOfferStatus::PENDING;
+        return $user->id === $offer->post->user_id && $offer->status === PostOfferStatus::PENDING && $offer->post->status === PostStatus::AVAILABLE;
     }
 
 }

@@ -19,7 +19,8 @@
                                     &middot; {{ $offer->created_at->diffForHumans() }}
                                 </flux:text>
                             </div>
-                            <flux:badge size="sm" :color="$offer->status->color()">{{ $offer->status->label() }}
+                            <flux:badge size="sm" :color="$offer->status->color()">
+                                {{ $offer->status->label() }}
                             </flux:badge>
 
                         </div>
@@ -28,7 +29,7 @@
                                 <form method="POST" action="{{ route('post.offers.accept', $offer) }}">
                                     @csrf
                                     @method('PATCH')
-                                    <flux:button size="sm">Accept</flux:button>
+                                    <flux:button type='submit' size="sm">Accept</flux:button>
                                 </form>
                             @endcan
                             @can('reject', $offer)

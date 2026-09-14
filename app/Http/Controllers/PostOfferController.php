@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\PostOffer;
+use Illuminate\Support\Facades\DB;
 use App\Policies\PostOfferPolicy;
 use App\PostOfferStatus;
+use App\PostStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -39,8 +41,15 @@ class PostOfferController extends Controller
     {
         Gate::authorize('accept', $offer);
 
-        $offer->status = PostOfferStatus::ACCEPTED;
-        $offer->save();
+        DB::transaction(function() use ($offer) {
+            $offer->status = PostOfferStatus::ACCEPTED;
+            $offer->post->status = PostStatus::IN_PROGRESS;
+            $offer->save();
+            $offer->post->save();
+        });
+
+       
+        
 
         return back();
     }

@@ -1,15 +1,18 @@
 <x-layouts::app :title="$post->offering_skill">
     <div class="mx-auto w-full max-w-2xl p-6 lg:p-8">
         <div class="flex items-center justify-between">
-            <flux:button href="{{ route('home') }}" variant="ghost" size="sm" icon="arrow-left">Back to posts</flux:button>
+            <flux:button href="{{ route('home') }}" variant="ghost" size="sm" icon="arrow-left">Back to posts
+            </flux:button>
 
             <div class="flex items-center gap-2">
                 @can('update', $post)
-                    <flux:button href="{{ route('posts.edit', $post) }}" variant="ghost" size="sm" icon="pencil-square">Edit</flux:button>
+                    <flux:button href="{{ route('posts.edit', $post) }}" variant="ghost" size="sm" icon="pencil-square">
+                        Edit</flux:button>
                 @endcan
 
                 @can('delete', $post)
-                    <form method="POST" action="{{ route('posts.destroy', $post) }}" onsubmit="return confirm('Delete this post? This cannot be undone.')">
+                    <form method="POST" action="{{ route('posts.destroy', $post) }}"
+                        onsubmit="return confirm('Delete this post? This cannot be undone.')">
                         @csrf
                         @method('DELETE')
                         <flux:button type="submit" variant="danger" size="sm" icon="trash">Delete</flux:button>
@@ -23,7 +26,8 @@
         <flux:card class="mt-6 space-y-6">
             <div class="flex items-center justify-between">
                 <flux:badge size="sm" color="zinc">{{ $post->category->name }}</flux:badge>
-                <flux:badge size="sm" :color="$post->status === 'available' ? 'green' : 'zinc'">{{ ucfirst($post->status) }}</flux:badge>
+                <flux:badge size="sm" :color="$post->status === 'available' ? 'green' : 'zinc'">
+                    {{ ucfirst($post->status->label()) }}</flux:badge>
             </div>
 
             <div class="grid gap-6 sm:grid-cols-2">
@@ -47,7 +51,8 @@
 
             <flux:separator variant="subtle" />
 
-            <flux:text size="sm" class="text-zinc-500">Posted by {{ $post->user->username }} &middot; {{ $post->created_at->diffForHumans() }}</flux:text>
+            <flux:text size="sm" class="text-zinc-500">Posted by {{ $post->user->username }} &middot;
+                {{ $post->created_at->diffForHumans() }}</flux:text>
         </flux:card>
     </div>
 </x-layouts::app>
