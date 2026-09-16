@@ -7,14 +7,16 @@
 @else
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($posts as $post)
-            <a href="{{ route('posts.show', $post) }}" wire:key="post-{{ $post->id }}" class="block">
+            @php($isAvailable = $post->status === \App\PostStatus::AVAILABLE)
+            <a href="{{ route('posts.show', $post) }}" wire:key="post-{{ $post->id }}"
+                class="block {{ $isAvailable ? '' : 'pointer-events-none opacity-50' }}">
                 <div
                     class="h-full space-y-3 rounded-xl border border-zinc-200 bg-white p-6 transition hover:border-zinc-300 hover:shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-600">
                     <div class="flex items-center justify-between">
                         <span
                             class="inline-flex items-center rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">{{ $post->category->name }}</span>
                         <span
-                            class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium {{ $post->status === 'available' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300' }}">{{ ucfirst($post->status->label()) }}</span>
+                            class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium {{ $isAvailable ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300' }}">{{ $post->status->label() }}</span>
                     </div>
 
                     <div>

@@ -7,6 +7,10 @@
             </div>
         </div>
 
+        @if (session('status'))
+            <flux:callout class="mt-6" icon="information-circle" heading="{{ session('status') }}" />
+        @endif
+
         <div class="mt-8">
             <livewire:posts.search-and-filter />
         </div>

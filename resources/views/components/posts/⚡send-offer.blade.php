@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\PostOfferStatus;
+use App\PostStatus;
 use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
@@ -18,7 +19,7 @@ new class extends Component {
     {
         $this->validate(['message' => 'nullable|string|max:500']);
 
-        if ($this->isOwner() || $this->hasOffered()) {
+        if ($this->isOwner() || $this->hasOffered() || ! $this->isAvailable()) {
             return;
         }
 
@@ -42,6 +43,11 @@ new class extends Component {
     {
         return $this->post->offers()->where('user_id', Auth::id())->where('status', PostOfferStatus::PENDING)->exists();
     }
+
+    public function isAvailable(): bool
+    {
+        return $this->post->status === PostStatus::AVAILABLE;
+    }
 };
 ?>
 
@@ -49,6 +55,8 @@ new class extends Component {
     @if ($this->isOwner())
     @elseif ($this->hasOffered())
         <flux:badge size="sm" color="green" icon="check">Offer sent</flux:badge>
+    @elseif (! $this->isAvailable())
+        <flux:badge size="sm" color="zinc">No longer available</flux:badge>
     @else
         <flux:button size="sm" icon="hand-raised" wire:click="$set('showModal', true)">Send offer</flux:button>
 

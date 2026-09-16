@@ -26,7 +26,7 @@
         <flux:card class="mt-6 space-y-6">
             <div class="flex items-center justify-between">
                 <flux:badge size="sm" color="zinc">{{ $post->category->name }}</flux:badge>
-                <flux:badge size="sm" :color="$post->status === 'available' ? 'green' : 'zinc'">
+                <flux:badge size="sm" :color="$post->status === \App\PostStatus::AVAILABLE ? 'green' : 'zinc'">
                     {{ ucfirst($post->status->label()) }}</flux:badge>
             </div>
 

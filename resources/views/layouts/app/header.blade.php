@@ -14,6 +14,7 @@
                 <flux:navbar.item icon="plus" :href="route('posts.create')" :current="request()->routeIs('posts.create')">Create</flux:navbar.item>
                 <flux:navbar.item icon="inbox" :href="route('posts.requests')" :current="request()->routeIs('posts.requests')">Requests</flux:navbar.item>
                 <flux:navbar.item icon="hand-raised" :href="route('posts.offers')" :current="request()->routeIs('posts.offers')">Offers</flux:navbar.item>
+                <flux:navbar.item icon="arrow-path" :href="route('posts.progress')" :current="request()->routeIs('posts.progress')">In Progress</flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
@@ -36,6 +37,7 @@
                     <flux:sidebar.item icon="plus" :href="route('posts.create')" :current="request()->routeIs('posts.create')">Create</flux:sidebar.item>
                     <flux:sidebar.item icon="inbox" :href="route('posts.requests')" :current="request()->routeIs('posts.requests')">Requests</flux:sidebar.item>
                     <flux:sidebar.item icon="hand-raised" :href="route('posts.offers')" :current="request()->routeIs('posts.offers')">Offers</flux:sidebar.item>
+                    <flux:sidebar.item icon="arrow-path" :href="route('posts.progress')" :current="request()->routeIs('posts.progress')">In Progress</flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

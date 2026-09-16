@@ -16,8 +16,12 @@ class PostController extends Controller
         return view('posts.index');
     }
 
-    public function show(Post $post): View
+    public function show(Post $post): View|RedirectResponse
     {
+        if (Gate::denies('view', $post)) {
+            return redirect()->route('home')->with('status', 'That post is no longer available.');
+        }
+
         $post->load(['user', 'category']);
 
         return view('posts.show', compact('post'));
