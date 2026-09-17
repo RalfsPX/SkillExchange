@@ -4,10 +4,13 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostOfferController;
 use App\Http\Controllers\PostProgressController;
 use App\Http\Controllers\PostRequestController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('home');
+
+    Route::get('users/{user}', [ProfileController::class, 'show'])->name('profile.show');
 
     Route::get('requests', [PostRequestController::class, 'index'])->name('posts.requests');
     Route::get('offers', [PostOfferController::class, 'index'])->name('posts.offers');

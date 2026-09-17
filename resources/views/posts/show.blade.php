@@ -51,8 +51,9 @@
 
             <flux:separator variant="subtle" />
 
-            <flux:text size="sm" class="text-zinc-500">Posted by {{ $post->user->username }} &middot;
-                {{ $post->created_at->diffForHumans() }}</flux:text>
+            <flux:text size="sm" class="text-zinc-500">Posted by
+                <a href="{{ route('profile.show', $post->user) }}" class="underline">{{ $post->user->username }}</a>
+                &middot; {{ $post->created_at->diffForHumans() }}</flux:text>
         </flux:card>
     </div>
 </x-layouts::app>

@@ -12,7 +12,9 @@
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 <flux:text size="sm" class="text-zinc-500">
-                                    To {{ $offer->post->user->username }} &middot;
+                                    To <a href="{{ route('profile.show', $offer->post->user) }}"
+                                        class="underline">{{ $offer->post->user->username }}</a>
+                                    &middot;
                                     {{ $offer->created_at->diffForHumans() }}
                                 </flux:text>
                                 <a href="{{ route('posts.show', $offer->post) }}" class="underline">

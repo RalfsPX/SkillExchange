@@ -11,7 +11,9 @@
                     <flux:card class="space-y-3" wire:key="offer-{{ $offer->id }}">
                         <div class="flex items-start justify-between gap-3">
                             <div>
-                                <flux:heading size="lg">{{ $offer->user->username }}</flux:heading>
+                                <flux:heading size="lg">
+                                    <a href="{{ route('profile.show', $offer->user) }}" class="hover:underline">{{ $offer->user->username }}</a>
+                                </flux:heading>
                                 <flux:text size="sm" class="text-zinc-500">
                                     for
                                     <a href="{{ route('posts.show', $offer->post) }}"

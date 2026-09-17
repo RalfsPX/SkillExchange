@@ -9,22 +9,19 @@ use App\PostStatus;
 
 class PostOfferPolicy
 {
-    public function view(User $user, PostOffer $offer): bool
-    {
-        return $offer->status === PostOfferStatus::ACCEPTED
-            && ($user->id === $offer->user_id || $user->id === $offer->post->user_id);
-    }
-
+    // Only the user who sent an offer can cancel the post
     public function cancel(User $user, PostOffer $offer): bool
     {
         return $user->id === $offer->user_id && $offer->status === PostOfferStatus::PENDING;
     }
 
+    // The author can rejected an offer
     public function reject(User $user, PostOffer $offer): bool
     {
         return $user->id === $offer->post->user_id && $offer->status === PostOfferStatus::PENDING;
     }
 
+    // The author can accept an offer
     public function accept(User $user, PostOffer $offer): bool
     {
         return $user->id === $offer->post->user_id && $offer->status === PostOfferStatus::PENDING && $offer->post->status === PostStatus::AVAILABLE;
