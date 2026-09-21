@@ -28,6 +28,16 @@ class PostOffer extends Model
         ];
     }
 
+    public function hasBeenCompletedBy(User $user): bool
+    {
+        return $this->completeOffers()->where('user_id', $user->id)->exists();
+    }
+
+    public function hasBeenCompletedByOther(User $user): bool
+    {
+        return $this->completeOffers()->where('user_id', '!=', $user->id)->exists();
+    }
+
     /**
      * The post the offer was made on.
      *
@@ -56,5 +66,15 @@ class PostOffer extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * The confirmations that this offer's exchange is complete, one per participant.
+     *
+     * @return HasMany<CompleteOffer, $this>
+     */
+    public function completeOffers(): HasMany
+    {
+        return $this->hasMany(CompleteOffer::class);
     }
 }

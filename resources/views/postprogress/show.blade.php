@@ -11,7 +11,7 @@ $otherUsername = $offer->user_id === auth()->id() ? $offer->post->user->username
                 <div class="flex items-center justify-between">
                     <flux:badge size="sm" color="zinc">{{ $offer->post->category->name }}</flux:badge>
                     <flux:badge size="sm"
-                        :color="$offer->post->status === \App\PostStatus::AVAILABLE ? 'green' : 'zinc'">
+                        :color="match ($offer->post->status) {\App\PostStatus::COMPLETED => 'green', \App\PostStatus::IN_PROGRESS => 'amber', default => 'zinc',}">
                         {{ $offer->post->status->label() }}
                     </flux:badge>
                 </div>
@@ -41,6 +41,32 @@ $otherUsername = $offer->user_id === auth()->id() ? $offer->post->user->username
                     Posted by {{ $offer->post->user->username }} &middot;
                     {{ $offer->post->created_at->diffForHumans() }}
                 </flux:text>
+
+                <flux:separator variant="subtle" />
+
+                @if ($offer->post->status === \App\PostStatus::COMPLETED)
+                    <flux:callout icon="check-circle" variant="success"
+                        heading="You both confirmed. This exchange is complete." />
+                @elseif ($offer->hasBeenCompletedBy(auth()->user()))
+                    <div class="space-y-2">
+                        <flux:text size="sm">Waiting for {{ $otherUsername }} to confirm</flux:text>
+
+                        <flux:button disabled class="w-full">Mark as complete</flux:button>
+                    </div>
+                @else
+                    <form method="POST" action="{{ route('posts.progress.complete', $offer) }}" class="space-y-2">
+                        @csrf
+                        @method('PATCH')
+
+                        @if ($offer->hasBeenCompletedByOther(auth()->user()))
+                            <flux:text size="sm">{{ $otherUsername }} marked this as complete. Confirm to close
+                                it.
+                            </flux:text>
+                        @endif
+
+                        <flux:button type="submit" variant="primary" class="w-full">Mark as complete</flux:button>
+                    </form>
+                @endif
             </flux:card>
 
             <flux:card class="flex h-[32rem] flex-col">

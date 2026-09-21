@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('offers', [PostOfferController::class, 'index'])->name('posts.offers');
     Route::get('progress', [PostProgressController::class, 'index'])->name('posts.progress');
     Route::get('progress/{offer}', [PostProgressController::class, 'show'])->name('posts.progress.show');
+    Route::patch('progress/{offer}/complete', [PostProgressController::class, 'complete'])->name('posts.progress.complete');
     Route::patch('offers/{offer}/accept', [PostOfferController::class, 'accept'])->name('post.offers.accept');
 
     Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');

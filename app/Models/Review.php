@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
- * @property int $post_offer_id
- * @property int $reviewer_id
- * @property int $reviewee_id
+ * @property int|null $post_offer_id
+ * @property int|null $reviewer_id
+ * @property int|null $reviewee_id
  * @property int $review
  */
 #[Fillable(['post_offer_id', 'reviewer_id', 'reviewee_id', 'review'])]

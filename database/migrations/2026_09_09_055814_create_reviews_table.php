@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_offer_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('reviewer_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('reviewee_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('post_offer_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('reviewer_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('reviewee_id')->nullable()->constrained('users')->nullOnDelete();
             $table->integer('review');
             $table->timestamps();
         });

@@ -9,6 +9,21 @@ use App\PostStatus;
 
 class PostOfferPolicy
 {
+    // Only the two users in an accepted offer can view its progress page
+    public function view(User $user, PostOffer $offer): bool
+    {
+        return $offer->status === PostOfferStatus::ACCEPTED
+            && ($user->id === $offer->user_id || $user->id === $offer->post->user_id);
+    }
+
+    // Either participant can confirm completion once, while the swap is in progress
+    public function complete(User $user, PostOffer $offer): bool
+    {
+        return $this->view($user, $offer)
+            && $offer->post->status === PostStatus::IN_PROGRESS
+            && ! $offer->hasBeenCompletedBy($user);
+    }
+
     // Only the user who sent an offer can cancel the post
     public function cancel(User $user, PostOffer $offer): bool
     {

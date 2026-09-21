@@ -20,7 +20,10 @@
                                     <flux:heading size="lg">{{ $match->post->offering_skill }}</flux:heading>
                                 </a>
                             </div>
-                            <flux:badge size="sm" color="green">In progress</flux:badge>
+                            <flux:badge size="sm"
+                                :color="$match->post->status === \App\PostStatus::COMPLETED ? 'green' : 'amber'">
+                                {{ $match->post->status->label() }}
+                            </flux:badge>
                         </div>
 
                         <flux:text size="sm" class="text-zinc-500">Looking for: {{ $match->post->looking_skill }}</flux:text>

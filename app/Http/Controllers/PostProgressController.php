@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\PostOffer;
 use App\PostOfferStatus;
+use App\PostStatus;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class PostProgressController extends Controller
@@ -32,5 +36,25 @@ class PostProgressController extends Controller
         $offer->load(['post.user', 'user']);
 
         return view('postprogress.show', compact('offer'));
+    }
+
+    public function complete(Request $request, PostOffer $offer): RedirectResponse
+    {
+        $user = $request->user();
+
+        DB::transaction(function () use ($offer, $user) {
+            $offer = PostOffer::with('post')->lockForUpdate()->findOrFail($offer->id);
+
+            Gate::forUser($user)->authorize('complete', $offer);
+
+            $offer->completeOffers()->create(['user_id' => $user->id]);
+
+            if ($offer->completeOffers()->count() === 2) {
+                $offer->post->status = PostStatus::COMPLETED;
+                $offer->post->save();
+            }
+        });
+
+        return back();
     }
 }
