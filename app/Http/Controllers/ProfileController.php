@@ -2,9 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\PostStatus;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    //
+    public function show(User $user): View
+    {
+        $posts = $user->posts()
+            ->with('category')
+            ->when($user->isNot(Auth::user()), fn ($query) => $query->where('status', PostStatus::AVAILABLE))
+            ->latest()
+            ->get();
+
+        return view('profile.show', compact('user', 'posts'));
+    }
 }

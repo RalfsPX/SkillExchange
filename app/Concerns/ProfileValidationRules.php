@@ -31,6 +31,7 @@ trait ProfileValidationRules
         return [
             'required',
             'string',
+            'min:4',
             'max:255',
             $userId === null
                 ? Rule::unique(User::class)
