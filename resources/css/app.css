@@ -23,6 +23,21 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
+    /* SkillExchange brand palette */
+    --color-cream: #F6F7EB;
+    --color-cream-200: #EDEFDD;
+    --color-cream-300: #E2E5CB;
+
+    --color-ember: #E94F37;
+    --color-ember-600: #D33F28;
+    --color-ember-700: #B3331F;
+    --color-ember-100: #FBDCD7;
+
+    --color-ink: #393E41;
+    --color-ink-700: #2C3033;
+    --color-ink-400: #6B7175;
+    --color-ink-300: #8C9295;
+
     --color-accent: var(--color-neutral-800);
     --color-accent-content: var(--color-neutral-800);
     --color-accent-foreground: var(--color-white);
@@ -64,3 +79,83 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* ---------------------------------------------------------------
+   Auth screens (login, register, password reset)
+   Scopes the Flux accent tokens to the SkillExchange palette so
+   primary buttons and focus rings pick up the brand automatically,
+   without touching the signed-in app.
+   --------------------------------------------------------------- */
+.auth-brand {
+    --color-accent: var(--color-ember);
+    --color-accent-content: var(--color-ember);
+    --color-accent-foreground: var(--color-cream);
+}
+
+.auth-brand [data-flux-label] {
+    @apply text-sm font-semibold text-ink;
+}
+
+.auth-brand input[data-flux-control] {
+    @apply rounded-xl border-ink/15 bg-white py-2.5 text-ink shadow-none placeholder:text-ink/35;
+}
+
+.auth-brand input:focus[data-flux-control] {
+    @apply border-ember ring-offset-white;
+}
+
+.auth-brand ui-checkbox > div {
+    @apply border-ink/25;
+}
+
+/* ---------------------------------------------------------------
+   Brand transition loader
+   Full-screen overlay with the spinning SkillExchange mark, shown
+   while moving between the landing page and the auth screens and
+   while an auth form is submitting.
+   --------------------------------------------------------------- */
+.brand-loader {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.brand-loader.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.brand-loader__mark {
+    animation: brand-mark-spin 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.brand-loader__ring {
+    animation: brand-ring-spin 0.9s linear infinite;
+}
+
+.brand-loader__label {
+    animation: brand-label-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes brand-mark-spin {
+    0%   { transform: rotate(0deg)   scale(1); }
+    50%  { transform: rotate(180deg) scale(0.9); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes brand-ring-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes brand-label-pulse {
+    0%, 100% { opacity: 0.45; }
+    50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brand-loader__mark,
+    .brand-loader__ring,
+    .brand-loader__label {
+        animation: none;
+    }
+}

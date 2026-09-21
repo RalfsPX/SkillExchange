@@ -2,9 +2,10 @@
 
 use App\Models\User;
 
-test('guests are redirected to the login page', function () {
+test('guests see the landing page', function () {
     $response = $this->get(route('home'));
-    $response->assertRedirect(route('login'));
+    $response->assertOk();
+    $response->assertViewIs('welcome');
 });
 
 test('authenticated users can visit the home page', function () {

@@ -7,9 +7,10 @@ use App\Http\Controllers\PostRequestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [PostController::class, 'index'])->name('home');
+// Public landing page for guests; authenticated users get the post feed.
+Route::get('/', [PostController::class, 'index'])->name('home');
 
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('users/{user}', [ProfileController::class, 'show'])->name('profile.show');
 
     Route::get('requests', [PostRequestController::class, 'index'])->name('posts.requests');
